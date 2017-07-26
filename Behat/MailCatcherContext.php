@@ -158,7 +158,7 @@ class MailCatcherContext implements Context, TranslatableContext, MailCatcherAwa
             throw new \RuntimeException(sprintf('Unable to read mail'));
         }
 
-        if (false === strpos($content, $text)) {
+        if (false === strpos($content, (string) $text)) {
             throw new \InvalidArgumentException(sprintf("Unable to find text \"%s\" in current message:\n%s", $text, $message->getContent()));
         }
     }
