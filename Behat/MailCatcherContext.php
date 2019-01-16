@@ -158,8 +158,36 @@ class MailCatcherContext implements Context, TranslatableContext, MailCatcherAwa
             throw new \RuntimeException(sprintf('Unable to read mail'));
         }
 
-        if (false === strpos($content, $text)) {
+        if (false === strpos($content, (string) $text)) {
             throw new \InvalidArgumentException(sprintf("Unable to find text \"%s\" in current message:\n%s", $text, $message->getContent()));
+        }
+    }
+
+    /**
+     * @Then /^I should see "([^"]+)" in mail source$/
+     */
+    public function seeInMailSource($text)
+    {
+        $message = $this->getCurrentMessage();
+
+        $content = $message->getContent();
+
+        if (false === strpos($content, $text)) {
+            throw new \InvalidArgumentException(sprintf("Unable to find text \"%s\" in current message source:\n%s", $text, $content));
+        }
+    }
+
+    /**
+     * @Then /^I should not see "([^"]+)" in mail source$/
+     */
+    public function notSeeInMailSource($text)
+    {
+        $message = $this->getCurrentMessage();
+
+        $content = $message->getContent();
+
+        if (false !== strpos($content, $text)) {
+            throw new \InvalidArgumentException(sprintf("Unable to find text \"%s\" in current message source:\n%s", $text, $content));
         }
     }
 
